@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+"discord.py" = {git = "https://github.com/Rapptz/discord.py"}
+coloredlogs = "*"
+motor = "*"
+pyyaml = "*"
+python-dotenv = "*"
+pymongo = "*"
+aiohttp = "*"
+psutil = "*"
+requests = "*"
+dictor = "*"
+aioconsole = "*"
+click = "*"
+sentry-sdk = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
+python_full_version = "3.11.0"
