@@ -52,7 +52,7 @@ class Groups(commands.Cog):
         if not group:
             return await interaction.followup.send("Group not found!", ephemeral=True)
         from common.functions.groups import build_group_info
-        em, view = build_group_info(interaction, group)
+        em, view = await build_group_info(interaction, group)
         await interaction.followup.send(embed=em, view=view)
 
     @group.command(name="create", description="Create a group.")
