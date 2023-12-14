@@ -6,6 +6,9 @@ import motor.motor_asyncio
 import pymongo.errors
 from motor.core import AgnosticCollection, AgnosticDatabase
 
+from common.database.groups import Group
+from common.database.guilds import Guild
+
 
 class Database:
     def __init__(self):
@@ -48,3 +51,19 @@ class Database:
                 self.log.error(f"Failed to create collection {collection_name}: {e}")
                 raise
             setattr(self, collection_name, self.database[collection_name])
+
+    #
+    async def get_guild(self, guild_id: str) -> Guild:
+        guild_data = await self.guilds.find_one({"_id": guild_id})
+        if guild_data:
+            return Guild.from_existing(self, guild_id, dict(guild_data))
+        new_guild = Guild.create(self, guild_id)
+        await new_guild.save()
+        return new_guild
+
+    async def get_group(self, guild_id: str, group_id: str) -> Optional[Group]:
+        guild = await self.get_guild(guild_id)
+        for group in guild.groups:
+            if group.id == group_id:
+                return group
+        return None

@@ -1,7 +1,6 @@
 from typing import Optional
 
 import discord
-from discord import app_commands
 from discord.ext import commands
 
 from bot import Bot
@@ -28,19 +27,3 @@ class Dev(commands.Cog):
             else:
                 ret += 1
         await ctx.send(f"Synced the tree to {ret}/{len(guilds.split(','))}")
-
-    @app_commands.command()
-    async def test(self, interaction: discord.Interaction, example: Optional[str]):
-        command = interaction.command.name
-        data = interaction.data
-        extras = interaction.extras
-        await interaction.response.send_message(f"{command}\n{data}\n{extras}\n{example}", ephemeral=True)
-
-    testing = app_commands.Group(name="testing", description="Testing commands")
-
-    @testing.command()
-    async def testone(self, interaction: discord.Interaction, example: Optional[str]):
-        command = interaction.command.name
-        data = interaction.data
-        extras = interaction.extras
-        await interaction.response.send_message(f"{command}\n{data}\n{extras}\n{example}", ephemeral=True)

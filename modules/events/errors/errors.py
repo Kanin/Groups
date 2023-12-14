@@ -11,17 +11,6 @@ from bot import Bot
 from common.functions.text import pagify
 
 
-def init_sentry(bot: Bot):
-    sentry_sdk.init(
-        os.getenv("SENTRY_URL"),
-        traces_sample_rate=1.0,
-        profiles_sample_rate=1.0,
-        environment="Development" if bot.debug else "Production",
-        max_breadcrumbs=50,
-        release=bot.version["bot"],
-    )
-
-
 class Errors(commands.Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
@@ -59,12 +48,13 @@ class Errors(commands.Cog):
         parent_command = ""
         parent = interaction.command.parent
         while parent:
-            parent_command = f"{parent.name} {parent_command}"
+            parent_command = f"{parent.name} {parent_command}" if parent_command else f"{parent.name}"
             parent = parent.parent
-        command = f"/{parent_command} {interaction.command.name}"
+        command = "/" + (f"{parent_command} " if parent_command else "") + interaction.command.name
         if "options" in data:
             if "options" in data["options"][0]:
                 for option in data["options"][0]["options"]:
+                    # noinspection PyTypeChecker
                     command += f" `{option['name']}: {option['value']}`"
 
         em = discord.Embed(

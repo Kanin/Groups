@@ -55,4 +55,3 @@ class Ready(commands.Cog):
             if failed > 0:
                 message += f" | Failed to load {failed} {name}"
             self.bot.log.info(message)
-        await self.bot.tree.sync()

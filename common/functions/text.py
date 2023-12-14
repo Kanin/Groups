@@ -1,3 +1,6 @@
+import re
+
+
 def pagify(text: str, delims: list = None, shorten_by=8, page_length=1900):
     delims = delims or ["\n"]
     in_text = text
@@ -12,3 +15,9 @@ def pagify(text: str, delims: list = None, shorten_by=8, page_length=1900):
 
 def readable_list(before: list):
     return f"{', '.join(before[:-1])}, and {before[-1]}" if len(before) > 2 else " and ".join(before)
+
+
+def normalize_text(text: str):
+    normalized = re.sub(r"<a?:\w+:\d+>", "", text)
+    normalized = re.sub(r"[^a-zA-Z0-9]+", "", normalized)
+    return normalized.lower()

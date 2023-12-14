@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2934fb9dc22ebce7929ec08b24585d31f31f029b4a4cf51af87057c943ed4455"
+            "sha256": "069b5fe19a22ce27c3e026ce750a426a6359765bb7f29062c1a4e5ac64476e4d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -258,9 +258,13 @@
             "index": "pypi",
             "version": "==0.1.12"
         },
+        "discord-ext-menus": {
+            "git": "https://github.com/Rapptz/discord-ext-menus",
+            "ref": "fbb8803779373357e274e1540b368365fd9d8074"
+        },
         "discord-py": {
             "git": "https://github.com/Rapptz/discord.py",
-            "ref": "f6182e57630903a4fc84cddf4fcf4219cb19d3e4"
+            "ref": "50190e088e38257016e69b9b0004f17b814b4478"
         },
         "dnspython": {
             "hashes": [
@@ -632,11 +636,11 @@
         },
         "sentry-sdk": {
             "hashes": [
-                "sha256:0017fa73b8ae2d4e57fd2522ee3df30453715b29d2692142793ec5d5f90b94a6",
-                "sha256:8feab81de6bbf64f53279b085bd3820e3e737403b0a0d9317f73a2c3374ae359"
+                "sha256:67f62238af273eebd6432f85116dc6cd5422d4bc02df886514e8139e755f48e4",
+                "sha256:9d3644b7c36a2c290f0d3275cba250202773f37545ef9097c8bcf561c6f5cdea"
             ],
             "index": "pypi",
-            "version": "==1.38.0"
+            "version": "==1.39.0"
         },
         "urllib3": {
             "hashes": [

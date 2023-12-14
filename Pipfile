@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 "discord.py" = {git = "https://github.com/Rapptz/discord.py"}
+discord-ext-menus = {ref = "fbb8803779373357e274e1540b368365fd9d8074", git = "https://github.com/Rapptz/discord-ext-menus"}
 coloredlogs = "*"
 motor = "*"
 pyyaml = "*"

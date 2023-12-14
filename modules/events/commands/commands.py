@@ -35,7 +35,10 @@ class Commands(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command(self, ctx: commands.Context):
-        self.bot.log.info(f"{ctx.author} in #{ctx.channel} ({ctx.guild}): {ctx.message.content}")
+        if not ctx.message.content:
+            return
+        location = f"#{ctx.channel} ({ctx.guild})" if ctx.guild else "Private Messages"
+        self.bot.log.info(f"{ctx.author} in {location}: {ctx.message.content}")
 
     @commands.Cog.listener()
     async def on_interaction(self, interaction: discord.Interaction):
@@ -45,10 +48,11 @@ class Commands(commands.Cog):
             parent_command = ""
             parent = interaction.command.parent
             while parent:
-                parent_command = f"{parent.name} {parent_command}"
+                parent_command = f"{parent.name} {parent_command}" if parent_command else f"{parent.name}"
                 parent = parent.parent
-            command = f"/{parent_command} {interaction.command.name}"
+            command = "/" + (f"{parent_command} " if parent_command else "") + interaction.command.name
             if "options" in data and "options" in data["options"][0]:
                 for option in data["options"][0]["options"]:
+                    # noinspection PyTypeChecker
                     command += f" {option['name']}: {option['value']}"
             self.bot.log.info(f"{interaction.user} in {location}: {command}")

@@ -2,6 +2,8 @@ import uuid
 from dataclasses import dataclass, field, asdict
 from typing import Any, List, Optional
 
+import discord
+
 
 @dataclass
 class Group:
@@ -13,10 +15,23 @@ class Group:
     guild_id: Optional[str] = None
     members: List[str] = field(default_factory=list)
 
+    @property
+    def id(self):
+        return self._id
+
+    def to_dict(self):
+        return {
+            "_id": self._id,
+            "creator": self.creator,
+            "name": self.name,
+            "description": self.description,
+            "members": self.members
+        }
+
     @classmethod
     def create(cls, db, creator: str, name: str, description: str) -> "Group":
-        giveaway = cls(db=db, creator=creator, name=name, description=description)
-        return giveaway
+        group = cls(db=db, creator=creator, name=name, description=description)
+        return group
 
     async def save(self):
         group_dict = asdict(self)
@@ -42,3 +57,12 @@ class Group:
     async def add_member(self, member: str):
         self.members.append(member)
         await self.update_fields(members=self.members)
+
+    async def remove_member(self, member: str):
+        self.members.remove(member)
+        await self.update_fields(members=self.members)
+
+    def get_members(self, guild: discord.Guild):
+        members = guild.members
+        available = [member for member in members if str(member.id) in self.members]
+        return available

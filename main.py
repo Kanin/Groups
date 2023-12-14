@@ -6,6 +6,7 @@ import signal
 from logging.handlers import RotatingFileHandler
 
 import coloredlogs
+import sentry_sdk
 import yaml
 from dotenv import load_dotenv
 
@@ -78,6 +79,28 @@ def setup_logger():
     return logger
 
 
+def before_send(event, hint):
+    # If the event doesn't have an exception, drop it
+    if 'exception' not in event:
+        return None
+    # If the exception wasn't manually captured, drop it
+    if 'exc_info' not in hint:
+        return None
+    return event
+
+
+def init_sentry(client):
+    sentry_sdk.init(
+        os.getenv("SENTRY_URL"),
+        before_send=before_send,
+        traces_sample_rate=1.0,
+        profiles_sample_rate=1.0,
+        environment="Development" if client.debug else "Production",
+        max_breadcrumbs=50,
+        release=client.version["bot"],
+    )
+
+
 def signal_handler(signum, frame):
     asyncio.create_task(bot.close(signum, frame))
 
@@ -95,6 +118,7 @@ if __name__ == "__main__":
 
     from bot import Bot
     bot = Bot()
+    init_sentry(bot)
     try:
         signal.signal(signal.SIGINT, signal_handler)
         bot.run(os.getenv("TOKEN"), log_handler=None)

@@ -8,6 +8,9 @@ import yaml
 from dictor import dictor
 from discord.ext.commands import AutoShardedBot as DiscordBot
 
+from common.components.buttons.groupjoin import GroupJoin
+from common.components.buttons.groupleave import GroupLeave
+from common.components.buttons.groupmembers import GroupMembers
 from common.database import Database
 from config import config
 
@@ -21,6 +24,7 @@ class Bot(DiscordBot):
     async def setup_hook(self):
         self.session = aiohttp.ClientSession()
         self.db: Database = await Database.create()
+        self.add_dynamic_items(GroupJoin, GroupLeave, GroupMembers)
         for ext in self.initial_extensions:
             await self.load_extension(ext)
 
@@ -53,4 +57,4 @@ class Bot(DiscordBot):
 
         # Config
         self.config = config
-        self.version = {"bot": "v0.0.1a", "python": sys.version.split(" ")[0], "discord.py": discord.__version__}
+        self.version = {"bot": "v1.0.0", "python": sys.version.split(" ")[0], "discord.py": discord.__version__}
