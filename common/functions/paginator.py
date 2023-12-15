@@ -320,6 +320,8 @@ class GroupPages(discord.ui.View):
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         if interaction.user and interaction.user.id in (self.interaction.client.owner_id, self.interaction.user.id):
             return True
+        if interaction.data["custom_id"].startswith("group_option_"):
+            return True
         await interaction.response.send_message('This pagination menu cannot be controlled by you, sorry!',
                                                 ephemeral=True)
         return False
@@ -373,8 +375,7 @@ class GroupPages(discord.ui.View):
         # The call here is safe because it's guarded by skip_if
         await self.show_page(interaction, self.source.get_max_pages() - 1)  # type: ignore
 
-
-    @discord.ui.button(label="1", style=discord.ButtonStyle.grey)
+    @discord.ui.button(label="1", style=discord.ButtonStyle.grey, custom_id="group_option_one")
     async def group_option_one(self, interaction: discord.Interaction, _button: discord.ui.Button):
         await interaction.response.defer()
         from common.functions.groups import build_group_info
@@ -382,7 +383,7 @@ class GroupPages(discord.ui.View):
         em, view = await build_group_info(self.interaction, group_data)
         await interaction.followup.send(embed=em, view=view, ephemeral=True)
 
-    @discord.ui.button(label="2", style=discord.ButtonStyle.grey)
+    @discord.ui.button(label="2", style=discord.ButtonStyle.grey, custom_id="group_option_two")
     async def group_option_two(self, interaction: discord.Interaction, _button: discord.ui.Button):
         await interaction.response.defer()
         from common.functions.groups import build_group_info
@@ -390,7 +391,7 @@ class GroupPages(discord.ui.View):
         em, view = await build_group_info(self.interaction, group_data)
         await interaction.followup.send(embed=em, view=view, ephemeral=True)
 
-    @discord.ui.button(label="3", style=discord.ButtonStyle.grey)
+    @discord.ui.button(label="3", style=discord.ButtonStyle.grey, custom_id="group_option_three")
     async def group_option_three(self, interaction: discord.Interaction, _button: discord.ui.Button):
         await interaction.response.defer()
         from common.functions.groups import build_group_info
@@ -398,7 +399,7 @@ class GroupPages(discord.ui.View):
         em, view = await build_group_info(self.interaction, group_data)
         await interaction.followup.send(embed=em, view=view, ephemeral=True)
 
-    @discord.ui.button(label="4", style=discord.ButtonStyle.grey)
+    @discord.ui.button(label="4", style=discord.ButtonStyle.grey, custom_id="group_option_four")
     async def group_option_four(self, interaction: discord.Interaction, _button: discord.ui.Button):
         await interaction.response.defer()
         from common.functions.groups import build_group_info
@@ -406,7 +407,7 @@ class GroupPages(discord.ui.View):
         em, view = await build_group_info(self.interaction, group_data)
         await interaction.followup.send(embed=em, view=view, ephemeral=True)
 
-    @discord.ui.button(label="5", style=discord.ButtonStyle.grey)
+    @discord.ui.button(label="5", style=discord.ButtonStyle.grey, custom_id="group_option_five")
     async def group_option_five(self, interaction: discord.Interaction, _button: discord.ui.Button):
         await interaction.response.defer()
         from common.functions.groups import build_group_info
