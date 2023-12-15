@@ -8,10 +8,10 @@ import discord
 @dataclass
 class Group:
     db: Any
+    _id: str
     creator: str
     name: str
     description: str
-    _id: str = field(default=str(uuid.uuid4()))
     guild_id: Optional[str] = None
     members: List[str] = field(default_factory=list)
 
@@ -30,7 +30,8 @@ class Group:
 
     @classmethod
     def create(cls, db, creator: str, name: str, description: str) -> "Group":
-        group = cls(db=db, creator=creator, name=name, description=description)
+        new_id = str(uuid.uuid4())
+        group = cls(db=db, _id=new_id, creator=creator, name=name, description=description)
         return group
 
     async def save(self):
