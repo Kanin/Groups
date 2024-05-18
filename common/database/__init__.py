@@ -19,7 +19,10 @@ class Database:
         db_port = os.getenv("DB_PORT", 27017)
         db_name = os.getenv("DB_NAME", "groups")
         db_auth = os.getenv("DB_AUTH", db_name)
+        db_repl = os.getenv("DB_REPL", None)
         self.uri = f"mongodb://{db_user}:{db_pass}@{db_host}:{db_port}?authSource={db_auth}"
+        if db_repl:
+            self.uri += f"&replicaSet={db_repl}"
         self.client = motor.motor_asyncio.AsyncIOMotorClient(self.uri)
         self.database: AgnosticDatabase = self.client[os.getenv("DB_NAME")]
         self.guilds: Optional[AgnosticCollection] = None
