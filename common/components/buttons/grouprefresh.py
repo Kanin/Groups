@@ -9,7 +9,7 @@ class GroupRefresh(discord.ui.DynamicItem[discord.ui.Button], template=r"groups:
     def __init__(self, database: Database, group_id: str) -> None:
         super().__init__(
             discord.ui.Button(
-                emoji="",
+                emoji="<:Refresh:1288239757645709352>",
                 style=discord.ButtonStyle.grey,
                 custom_id=f"groups:refresh:{group_id}"
             )
