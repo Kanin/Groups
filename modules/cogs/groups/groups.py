@@ -79,9 +79,10 @@ class Groups(commands.Cog):
     @group_ping.autocomplete("group")
     @group_delete.autocomplete("group")
     async def group_info_autocomplete(self, interaction: discord.Interaction, current: str):
+        current = current.lower()
         data = await self.bot.db.get_guild(str(interaction.guild_id))
         groups = []
         for group in data.groups:
-            if not current or current in group.name:
+            if not current or current in group.name.lower():
                 groups.append(app_commands.Choice(name=group.name, value=group.id))
         return groups
