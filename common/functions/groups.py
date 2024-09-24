@@ -3,6 +3,7 @@ import discord
 from common.components.buttons.groupjoin import GroupJoin
 from common.components.buttons.groupleave import GroupLeave
 from common.components.buttons.groupmembers import GroupMembers
+from common.components.buttons.grouprefresh import GroupRefresh
 from common.database import Group
 
 
@@ -15,6 +16,7 @@ async def build_group_info(interaction: discord.Interaction, group: Group):
     em.add_field(name="Members:", value=f"{len(members)}")
     em.add_field(name="Creator:", value=f"<@{group.creator}>")
     view = discord.ui.View(timeout=None)
+    view.add_item(GroupRefresh(interaction.client.db, group.id))
     view.add_item(GroupJoin(interaction.client.db, group.id))
     view.add_item(GroupLeave(interaction.client.db, group.id))
     view.add_item(GroupMembers(interaction.client.db, group.id))
