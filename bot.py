@@ -11,6 +11,7 @@ from discord.ext.commands import AutoShardedBot as DiscordBot
 from common.components.buttons.groupjoin import GroupJoin
 from common.components.buttons.groupleave import GroupLeave
 from common.components.buttons.groupmembers import GroupMembers
+from common.components.buttons.grouprefresh import GroupRefresh
 from common.database import Database
 from config import config
 
@@ -24,7 +25,7 @@ class Bot(DiscordBot):
     async def setup_hook(self):
         self.session = aiohttp.ClientSession()
         self.db: Database = await Database.create()
-        self.add_dynamic_items(GroupJoin, GroupLeave, GroupMembers)
+        self.add_dynamic_items(GroupJoin, GroupLeave, GroupMembers, GroupRefresh)
         for ext in self.initial_extensions:
             await self.load_extension(ext)
 
