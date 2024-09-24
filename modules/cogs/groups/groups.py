@@ -27,14 +27,14 @@ class Groups(commands.Cog):
     @group.command(name="ping", description="Ping a group.")
     @app_commands.describe(group="The group to ping")
     async def group_ping(self, interaction: discord.Interaction, group: str):
-        await interaction.response.defer(thinking=True)
+        await interaction.response.defer(thinking=True, ephemeral=True)
         group = await self.bot.db.get_group(str(interaction.guild_id), group)
         if not group:
             return await interaction.followup.send("Group not found!", ephemeral=True)
         members = group.get_members(interaction.guild)
         if not members:
             return await interaction.followup.send("No members to ping!", ephemeral=True)
-        content = f"**@{group.name}:** "
+        content = f"**@{interaction.user.mention}:** **@{group.name}:** "
         content += ", ".join(x.mention for x in members)
         if pages := pagify(content, delims=[", "]):
             for page in pages:
@@ -57,7 +57,6 @@ class Groups(commands.Cog):
 
     @group.command(name="create", description="Create a group.")
     @app_commands.describe(name="The name of the group", description="The description of the group")
-    @commands.has_permissions(manage_guild=True)
     async def group_create(self, interaction: discord.Interaction, name: str, description: str):
         await interaction.response.defer(thinking=True)
         guild = await self.bot.db.get_guild(str(interaction.guild_id))
@@ -65,10 +64,20 @@ class Groups(commands.Cog):
             await guild.create_group(str(interaction.user.id), name, description)
         except ValueError as e:
             return await interaction.followup.send(str(e), ephemeral=True)
-        await interaction.followup.send("Done", ephemeral=True)
+        await interaction.followup.send("Done!")
+
+    @group.command(name="delete", description="Delete a group.")
+    @app_commands.describe(group="The name of the group")
+    @app_commands.checks.has_permissions(manage_guild=True)
+    async def group_delete(self, interaction: discord.Interaction, group: str):
+        await interaction.response.defer(thinking=True, ephemeral=True)
+        guild = await self.bot.db.get_guild(str(interaction.guild_id))
+        await guild.delete_group(group)
+        await interaction.followup.send("Done!")
 
     @group_info.autocomplete("group")
     @group_ping.autocomplete("group")
+    @group_delete.autocomplete("group")
     async def group_info_autocomplete(self, interaction: discord.Interaction, current: str):
         data = await self.bot.db.get_guild(str(interaction.guild_id))
         groups = []

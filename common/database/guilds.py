@@ -49,3 +49,8 @@ class Guild:
         self.groups.append(group)
         await self.update_fields()
         return group
+
+    async def delete_group(self, group_id: str):
+        group_to_delete = next((group for group in self.groups if group._id == group_id), None)
+        self.groups.remove(group_to_delete)
+        await self.update_fields()
