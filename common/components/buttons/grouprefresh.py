@@ -19,7 +19,6 @@ class GroupRefresh(discord.ui.DynamicItem[discord.ui.Button], template=r"groups:
 
     @classmethod
     async def from_custom_id(cls, interaction: discord.Interaction, _item: discord.ui.Button, match: re.Match[str], /):
-        await interaction.response.defer(thinking=True, ephemeral=True)
         return cls(database=interaction.client.db, group_id=match["id"])
 
     async def callback(self, interaction: discord.Interaction) -> None:
